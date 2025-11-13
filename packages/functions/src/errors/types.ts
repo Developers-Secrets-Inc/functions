@@ -1,28 +1,31 @@
 import { Unit, NonEmptyArray } from "../types";
 
-export type ExceptionSpace = {
+export type ExceptionSpaceConfig = {
   name: string;
-  severity: 'info' | 'warning' | 'error' | 'critical';
-}
+  severity: "info" | "warning" | "error" | "critical";
+};
 
 export type ExceptionConfig = {
   name: string;
   namespace?: string;
   code?: string;
-
   message?: string;
+  cause?: Exception;
+  stack?: Exception[];
+  notes?: string[];
 };
 
 export type Exception = ExceptionConfig & {
-  stack: NonEmptyArray<Exception>;
+  stack: Exception[];
   cause?: Exception;
+  notes: string[];
 
-  from: (message: string) => Exception;
+  from: (cause: Exception) => Exception;
   is: (exception: Exception) => boolean;
-  addNote: (note: string) => Unit;
+  addNote: (note: string) => Exception;
 };
 
 export type ExceptionGroup = {
   name: string;
   exceptions: NonEmptyArray<Exception>;
-}
+};
