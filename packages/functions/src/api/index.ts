@@ -1,4 +1,3 @@
-// @deessejs/functions/index.ts
 import z, { ZodType } from "zod";
 import { AppContext } from "../context/typing";
 import { query as queryFunction } from "../functions/query";
@@ -14,12 +13,11 @@ export const createAPI = <TContext extends Record<string, unknown>>(config: {
 }) => {
   const ctx = { ...config.context } as TContext;
 
-  // API interne (on va y attacher les queries)
   const api = { context: ctx } as {
     context: TContext;
     [key: string]: QueryFn<any, any, any> | TContext;
   };
-  
+
   const query = <TContext extends AppContext = AppContext>() => {
     return <
       TArgs extends ZodType<any, any, any>,
